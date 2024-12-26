@@ -89,3 +89,7 @@ fp-info-cache
 *_sch.lck
 *_pcb.lck
 
+
+make_ttp_smart_esp32/make_ttp_smart/build
+
+delte_me.h
