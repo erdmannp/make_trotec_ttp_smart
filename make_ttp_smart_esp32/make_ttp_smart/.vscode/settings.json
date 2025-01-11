@@ -76,7 +76,25 @@
         "ranges": "cpp",
         "esp_wifi.h": "c",
         "webserver.h": "c",
-        "nvs_flash.h": "c"
+        "nvs_flash.h": "c",
+        "bitset": "c",
+        "regex": "c",
+        "chrono": "cpp",
+        "complex": "cpp",
+        "fstream": "cpp",
+        "future": "cpp",
+        "istream": "cpp",
+        "mutex": "cpp",
+        "numeric": "cpp",
+        "shared_mutex": "cpp",
+        "sstream": "cpp",
+        "stop_token": "cpp",
+        "codecvt": "c",
+        "condition_variable": "c",
+        "list": "c",
+        "freertos.h": "c",
+        "delete_me.h": "c",
+        "i2c.h": "c"
     }
     
 }

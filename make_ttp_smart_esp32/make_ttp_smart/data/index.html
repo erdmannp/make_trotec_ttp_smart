@@ -6,7 +6,37 @@
     <meta name="color-scheme" content="dark" />
     <title>Trotec TTP 5</title>
     <meta name="description" content="" />
+    <script>
+        async function fetchAndDisplayData() {
+    try {
+        const url = "/json"; 
 
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`HTTP-Error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        document.getElementById("humidity").textContent = `Humidity: ${Number(data.humidity).toFixed(2)} %`;
+        document.getElementById("temperature").textContent = `Temperature: ${Number(data.temperature).toFixed(2)} °C`;
+        document.getElementById("humidity_threshold").value =   `${data.humidity_threshold}`;
+        for (var i = 0; i < data.ssids.length; i++) {
+            var select = document.getElementById("Select");
+            var option = document.createElement("option");
+            option.text = data.ssids[i];
+            option.value = data.ssids[i];
+            select.add(option);
+        }
+    } catch (error) {
+        document.getElementById("humidity").textContent = "Humidity: Error loading data";
+        document.getElementById("temperature").textContent = "Temperature: Error loading data";
+    }
+}
+setInterval(fetchAndDisplayData, 500)
+
+
+    </script>
     <!-- Pico.css -->
     <link
       rel="stylesheet"
@@ -29,150 +59,75 @@
       <section id="preview">
         <h2>Data</h2>
         <div class="grid">
-            <p>Humidity: </p>
-            <p>Temperature: </p>
+            <p id="humidity">Humidity: </p>
+            <p id="temperature">Temperature: </p>
           </div>
       </section>
       <!-- ./ Preview -->
 
- 
-
-      <!-- Buttons-->
-      <section id="buttons">
-        <h2>Buttons</h2>
-        <p class="grid">
-          <button>Primary</button>
-          <button class="secondary">Secondary</button>
-          <button class="contrast">Contrast</button>
-        </p>
-        <p class="grid">
-          <button class="outline">Primary outline</button>
-          <button class="outline secondary">Secondary outline</button>
-          <button class="outline contrast">Contrast outline</button>
-        </p>
-      </section>
-      <!-- ./ Buttons -->
 
       <!-- Form elements-->
-      <section id="form">
-        <form>
-          <h2>Form elements</h2>
+      <h2>Configuration</h2>
 
-          <!-- Search -->
-          <label for="search">Search</label>
-          <input type="search" id="search" name="search" placeholder="Search" />
+      <section id="form"  >
+        <form name="forms" id="MyDataForm">
+            <div class="grid">
 
-          <!-- Text -->
-          <label for="text">Text</label>
-          <input type="text" id="text" name="text" placeholder="Text" />
-          <small>Curabitur consequat lacus at lacus porta finibus.</small>
+                <label for="Select">SSIDs</label>
+                <select id="Select" name="SSID" required>
+                </select>
 
-          <!-- Select -->
-          <label for="select">Select</label>
-          <select id="select" name="select" required>
-            <option value="" selected>Select…</option>
-            <option>…</option>
-          </select>
+                <label for="wifi_password">Password</label>
+                <input type="password" id="wifi_password" name="wifi_password"/>
 
-          <!-- File browser -->
-          <label for="file"
-            >File browser
-            <input type="file" id="file" name="file" />
-          </label>
+            </div>
+            <div class="grid">
+                <label for="humidity_threshold">Humidity Threshold</label>
+                <input type="text" id="humidity_threshold" name="humidity_threshold"/>
 
-          <!-- Range slider control -->
-          <label for="range"
-            >Range slider
-            <input type="range" min="0" max="100" value="50" id="range" name="range" />
-          </label>
+            </div>
 
-          <!-- States -->
-          <div class="grid">
-            <label for="valid">
-              Valid
-              <input type="text" id="valid" name="valid" placeholder="Valid" aria-invalid="false" />
-            </label>
-            <label for="invalid">
-              Invalid
-              <input
-                type="text"
-                id="invalid"
-                name="invalid"
-                placeholder="Invalid"
-                aria-invalid="true"
-              />
-            </label>
-            <label for="disabled">
-              Disabled
-              <input type="text" id="disabled" name="disabled" placeholder="Disabled" disabled />
-            </label>
-          </div>
+            <div class="grid">
+                <p><input type="submit" value="Save" />
+                </p>
+                <p>Warning: saving will trigger a reset!</p>
+            </div>
 
-          <div class="grid">
-            <!-- Date-->
-            <label for="date"
-              >Date
-              <input type="date" id="date" name="date" />
-            </label>
 
-            <!-- Time-->
-            <label for="time"
-              >Time
-              <input type="time" id="time" name="time" />
-            </label>
-
-            <!-- Color-->
-            <label for="color"
-              >Color
-              <input type="color" id="color" name="color" value="#0eaaaa" />
-            </label>
-          </div>
-
-          <div class="grid">
-            <!-- Checkboxes -->
-            <fieldset>
-              <legend><strong>Checkboxes</strong></legend>
-              <label for="checkbox-1">
-                <input type="checkbox" id="checkbox-1" name="checkbox-1" checked />
-                Checkbox
-              </label>
-              <label for="checkbox-2">
-                <input type="checkbox" id="checkbox-2" name="checkbox-2" />
-                Checkbox
-              </label>
-            </fieldset>
-
-            <!-- Radio buttons -->
-            <fieldset>
-              <legend><strong>Radio buttons</strong></legend>
-              <label for="radio-1">
-                <input type="radio" id="radio-1" name="radio" value="radio-1" checked />
-                Radio button
-              </label>
-              <label for="radio-2">
-                <input type="radio" id="radio-2" name="radio" value="radio-2" />
-                Radio button
-              </label>
-            </fieldset>
-
-            <!-- Switch -->
-            <fieldset>
-              <legend><strong>Switches</strong></legend>
-              <label for="switch-1">
-                <input type="checkbox" id="switch-1" name="switch-1" role="switch" checked />
-                Switch
-              </label>
-              <label for="switch-2">
-                <input type="checkbox" id="switch-2" name="switch-2" role="switch" />
-                Switch
-              </label>
-            </fieldset>
-          </div>
-
-          <!-- Buttons -->
-          <input type="reset" value="Reset" onclick="event.preventDefault()" />
-          <input type="submit" value="Submit" onclick="event.preventDefault()" />
         </form>
       </section>
       <!-- ./ Form elements-->
+       <script>
+
+document.getElementById("MyDataForm").addEventListener("submit", async function(event) {
+        event.preventDefault();
+
+        const ssid = document.getElementById("Select").value;
+        const wifi_password = document.getElementById("wifi_password").value;
+        const humidity_threshold = document.getElementById("humidity_threshold").value;
+
+        const jsonData = {
+            ssid: ssid,
+            wifi_password: wifi_password,
+            humidity_threshold: parseInt(humidity_threshold),  
+        };
+
+        try {
+            // JSON-Daten mit Fetch senden
+            const response = await fetch("/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(jsonData) // JSON-Objekt als String senden
+            });
+
+            // Antwort des Servers lesen
+            const text = await response.text();
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    });
+
+       </script>
 </html>
